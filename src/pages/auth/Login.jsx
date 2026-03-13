@@ -13,9 +13,20 @@ export default function Login() {
     const checkRequirements = async () => {
         if (!window.isSecureContext) throw new Error('Bluetooth requires a secure connection (HTTPS). Please ensure you are visiting via https:// or localhost.');
         if (!navigator.onLine) throw new Error('Wi-Fi or Network access is required to sign in.');
+        
+        // Bluetooth Hardware Check
         if (!navigator.bluetooth) throw new Error('Bluetooth is not supported on this browser/device.');
         const btAvailable = await navigator.bluetooth.getAvailability();
         if (!btAvailable) throw new Error('System Bluetooth is currently unavailable or disabled.');
+
+        // Bluetooth Confirmation (Request Device)
+        try {
+            await navigator.bluetooth.requestDevice({
+                acceptAllDevices: true
+            });
+        } catch (err) {
+            throw new Error('Bluetooth confirmation required: ' + err.message);
+        }
     };
 
     const handleSubmit = async (e) => {
