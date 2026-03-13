@@ -72,7 +72,15 @@ export default function Analyze() {
     const zenabId = user?.user_metadata?.full_name?.match(/\(ID: (.*?)\)/)?.[1] || '';
 
     useEffect(() => {
-        api.get('/measure/history', { params: { zenabId } }).then(r => setHistory(r.data)).catch(() => { });
+        api.get('/measure/history', { params: { zenabId } })
+            .then(r => {
+                if (Array.isArray(r.data)) {
+                    setHistory(r.data);
+                } else {
+                    console.error('History data is not an array:', r.data);
+                }
+            })
+            .catch(() => { });
     }, [zenabId]);
 
     const handleFile = useCallback((f) => {
@@ -106,7 +114,10 @@ export default function Analyze() {
             setResult(res.data);
             setHistory(prev => [res.data, ...prev].slice(0, 50));
         } catch (err) {
-            setError(err.response?.data?.error || 'Analysis failed. Make sure the ML service is running on port 8000.');
+            const msg = err.response?.data?.error || err.message || 'Analysis failed.';
+            setError(msg.includes('ML service unreachable') 
+                ? msg 
+                : `${msg}. Make sure your ML Service URL is correctly configured in Render.`);
         } finally {
             setLoading(false);
         }
