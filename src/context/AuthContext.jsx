@@ -32,7 +32,10 @@ export function AuthProvider({ children }) {
         const { data, error } = await supabase.auth.signUp({
             email,
             password,
-            options: { data: { full_name: fullName } },
+            options: { 
+                data: { full_name: fullName },
+                redirectTo: `${window.location.origin}/auth/callback`
+            },
         });
         if (error) throw error;
         return data;
@@ -44,7 +47,12 @@ export function AuthProvider({ children }) {
     };
 
     const signInWithGoogle = async () => {
-        const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+        const { data, error } = await supabase.auth.signInWithOAuth({ 
+            provider: 'google',
+            options: {
+                redirectTo: `${window.location.origin}/dashboard`
+            }
+        });
         if (error) throw error;
         return data;
     };
