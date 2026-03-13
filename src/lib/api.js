@@ -1,9 +1,14 @@
 import axios from 'axios';
 import { supabase } from './supabase';
 
+const getBaseURL = () => {
+    const envUrl = import.meta.env.VITE_API_URL;
+    if (!envUrl) return 'http://localhost:5000/api';
+    return envUrl.endsWith('/api') ? envUrl : `${envUrl.replace(/\/$/, '')}/api`;
+};
+
 const api = axios.create({
-    // In production, ensure VITE_API_URL is set to your deployed backend URL
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+    baseURL: getBaseURL(),
     timeout: 15000, 
     headers: { 'Content-Type': 'application/json' },
 });
