@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Navbar from './Navbar';
+import api from '../lib/api';
 import './HardwareTab.css';
 
 const PARTS = {
@@ -132,8 +133,8 @@ export default function HardwareTab() {
   useEffect(() => {
     const fetchTelemetry = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/telemetry/ZENAB_TREE_01`);
-        const data = await response.json();
+        const response = await api.get('/telemetry/ZENAB_TREE_01');
+        const data = response.data;
         if (data && data.length > 0) {
           const latest = data[0]; // sorted by timestamp desc in API
           setLiveData({
