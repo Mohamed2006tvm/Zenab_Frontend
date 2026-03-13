@@ -7,6 +7,7 @@ const navLinks = [
     { to: '/dashboard', label: 'Dashboard', protected: true },
     { to: '/map', label: 'Map', protected: false },
     { to: '/ai-insights', label: 'AI Insights', protected: false },
+    { to: '/analytics', label: 'Analytics', protected: true },
     { to: '/health', label: 'Health', protected: true },
     { to: '/reports', label: 'Reports', protected: true },
     { to: '/system-control', label: 'System', protected: true },

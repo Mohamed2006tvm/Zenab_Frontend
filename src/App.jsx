@@ -13,6 +13,7 @@ import Health from './pages/Health';
 import Reports from './pages/Reports';
 import Profile from './pages/Profile';
 import Analyze from './pages/Analyze';
+import Analytics from './pages/Analytics';
 import HardwareTab from './components/HardwareTab';
 import SystemControl from './pages/SystemControl';
 import About from './pages/About';
@@ -41,6 +42,7 @@ export default function App() {
               <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               <Route path="/analyze" element={<ProtectedRoute><Analyze /></ProtectedRoute>} />
+              <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
               <Route path="/system-control" element={<ProtectedRoute><SystemControl /></ProtectedRoute>} />
 
               {/* 404 */}

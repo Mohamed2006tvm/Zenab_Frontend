@@ -90,6 +90,17 @@ const PARTS = {
     imgAlt: 'Computer fan',
     desc: 'A powerful, quiet-running brushless fan that forces air through the moss biosheets. Flow rate is dynamically adjusted based on the current PM2.5 levels to maximize efficiency.',
     specs: ['120mm PWM Fan', 'High Static Pressure', 'IP55 Rated', 'Variable Speed'],
+  },
+  pms5003: {
+    icon: '🔬',
+    tag: 'Advanced Sensing',
+    name: 'PMS5003 Sensor',
+    sub: 'Digital Universal Particle Concentration Sensor',
+    color: '#34d399',
+    imgSrc: 'https://images.unsplash.com/photo-1597484662317-9bd76add240a?auto=format&fit=crop&w=600&q=80',
+    imgAlt: 'Particle sensor',
+    desc: 'A digital universal particle concentration sensor based on the principle of laser scattering. It can continuously collect and calculate the number of suspended particles of different sizes in the air per unit volume.',
+    specs: ['Laser Scattering', 'PM1.0, PM2.5, PM10', 'UART/PWM Output', '90s Response'],
   }
 };
 
@@ -102,6 +113,7 @@ const HOTSPOTS = [
   { key: 'gsm', top: '70%', left: '75%' },
   { key: 'gps', top: '60%', left: '50%' },
   { key: 'fan', top: '80%', left: '60%' },
+  { key: 'pms5003', top: '35%', left: '15%' },
 ];
 
 export default function HardwareTab() {
