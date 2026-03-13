@@ -1,9 +1,10 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import AQICard from '../components/AQICard';
 import SmartAlert from '../components/SmartAlert';
 import api from '../lib/api';
+import { useToast } from '../components/Toast';
 
 const quickLinks = [
     { to: '/map', label: 'Interactive Map', icon: '🗺️', desc: 'View AQI heatmap' },
@@ -29,6 +30,9 @@ export default function Dashboard() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    const toast = useToast();
+    const lastStatus = useRef('');
+
     // --- Live Simulation State ---
     const [liveAqi, setLiveAqi] = useState(42);
     const [liveTemp, setLiveTemp] = useState(24.5);
@@ -38,7 +42,24 @@ export default function Dashboard() {
         const interval = setInterval(() => {
             setLiveAqi(prev => {
                 const change = (Math.random() - 0.5) * 4;
-                return Math.max(10, Math.min(450, Math.round(prev + change)));
+                const next = Math.max(10, Math.min(450, Math.round(prev + change)));
+                
+                // Notification Logic
+                let newStatus = 'safe';
+                if (next > 150) newStatus = 'dangerous';
+                else if (next > 100) newStatus = 'warning';
+                else if (next > 50) newStatus = 'moderate';
+
+                if (newStatus !== lastStatus.current) {
+                    if (newStatus === 'dangerous') {
+                        toast.error(`HAZARDOUS AIR DETECTED! Current AQI: ${next}. Please wear a mask!`);
+                    } else if (newStatus === 'warning') {
+                        toast.warning(`Poor air quality detected. AQI: ${next}. Avoid long outdoor stays.`);
+                    }
+                    lastStatus.current = newStatus;
+                }
+
+                return next;
             });
             setLiveTemp(prev => {
                 const change = (Math.random() - 0.5) * 0.4;
@@ -47,7 +68,7 @@ export default function Dashboard() {
             setLastUpdated(new Date());
         }, 5000);
         return () => clearInterval(interval);
-    }, []);
+    }, [toast]);
 
     const statusInfo = useMemo(() => {
         if (liveAqi <= 50) return { label: 'Safe', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' };

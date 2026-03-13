@@ -11,11 +11,11 @@ export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
 
     const checkRequirements = async () => {
-        // if (!window.isSecureContext) throw new Error('Bluetooth requires a secure connection (HTTPS). Please ensure you are visiting via https:// or localhost.');
+        if (!window.isSecureContext) throw new Error('Bluetooth requires a secure connection (HTTPS). Please ensure you are visiting via https:// or localhost.');
         if (!navigator.onLine) throw new Error('Wi-Fi or Network access is required to sign in.');
-        // if (!navigator.bluetooth) throw new Error('Bluetooth is not supported on this browser/device.');
-        // const btAvailable = await navigator.bluetooth.getAvailability();
-        // if (!btAvailable) throw new Error('System Bluetooth is currently unavailable or disabled.');
+        if (!navigator.bluetooth) throw new Error('Bluetooth is not supported on this browser/device.');
+        const btAvailable = await navigator.bluetooth.getAvailability();
+        if (!btAvailable) throw new Error('System Bluetooth is currently unavailable or disabled.');
     };
 
     const handleSubmit = async (e) => {
@@ -32,7 +32,7 @@ export default function Login() {
         setLoading(true);
         try {
             await signIn(form.email, form.password);
-            navigate('/analyze');
+            navigate('/dashboard');
         } catch (err) {
             setError(err.message || 'Failed to sign in. Please check your credentials.');
         } finally {
