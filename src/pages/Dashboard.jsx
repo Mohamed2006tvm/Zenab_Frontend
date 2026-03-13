@@ -68,7 +68,7 @@ export default function Dashboard() {
                 setStations(stationsRes.data);
                 setSummary(summaryRes.data);
             } catch {
-                setError('Unable to connect to server. Make sure the backend is running on port 5000.');
+                setError('Unable to connect to the server. Please ensure the backend is running and the VITE_API_URL is correctly configured.');
             } finally {
                 setLoading(false);
             }
